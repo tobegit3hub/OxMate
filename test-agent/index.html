@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .game-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #4ecca3;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .score-board {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .score-board span {
+            color: #4ecca3;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        canvas {
+            border: 3px solid #4ecca3;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(78, 204, 163, 0.3);
+            background: #0f0f23;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .controls {
+            margin-top: 20px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .controls p {
+            margin: 5px 0;
+        }
+
+        .game-over {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px 50px;
+            border-radius: 15px;
+            border: 2px solid #4ecca3;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .game-over h2 {
+            color: #ff6b6b;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .game-over p {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .game-over button {
+            background: #4ecca3;
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .game-over button:hover {
+            background: #3db892;
+            transform: scale(1.05);
+        }
+
+        .mobile-controls {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .mobile-controls .row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 5px 0;
+        }
+
+        .mobile-controls button {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            background: #4ecca3;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #1a1a2e;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-controls button:active {
+            background: #3db892;
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .mobile-controls {
+                display: block;
+            }
+
+            .controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🐍 Snake Game</h1>
+        <div class="score-board">Score: <span id="score">0</span> | High Score: <span id="highScore">0</span></div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+        <div class="game-over" id="gameOver">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <button onclick="restartGame()">Play Again</button>
+        </div>
+
+        <div class="controls">
+            <p>Use <strong>Arrow Keys</strong> or <strong>WASD</strong> to control the snake</p>
+            <p>Press <strong>SPACE</strong> to pause/resume</p>
+        </div>
+
+        <div class="mobile-controls">
+            <div class="row">
+                <button onclick="setDirection('up')">↑</button>
+            </div>
+            <div class="row">
+                <button onclick="setDirection('left')">←</button>
+                <button onclick="setDirection('down')">↓</button>
+                <button onclick="setDirection('right')">→</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script>
+        // Initialize the game when page loads
+        window.onload = init;
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.getElementById('gameCanvas').addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.getElementById('gameCanvas').addEventListener('touchend', function(e) {
+            if (isGameOver) {
+                restartGame();
+                return;
+            }
+
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+
+            const dx = touchEndX - touchStartX;
+            const dy = touchEndY - touchStartY;
+
+            const minSwipe = 30; // minimum swipe distance
+
+            if (Math.abs(dx) > Math.abs(dy)) {
+                // Horizontal swipe
+                if (Math.abs(dx) > minSwipe) {
+                    setDirection(dx > 0 ? 'right' : 'left');
+                }
+            } else {
+                // Vertical swipe
+                if (Math.abs(dy) > minSwipe) {
+                    setDirection(dy > 0 ? 'down' : 'up');
+                }
+            }
+        }, { passive: true });
+
+        // Keyboard controls
+        document.addEventListener('keydown', function(e) {
+            if (isGameOver) {
+                if (e.code === 'Space' || e.code === 'Enter') {
+                    restartGame();
+                }
+                return;
+            }
+
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'w':
+                case 'W':
+                    e.preventDefault();
+                    setDirection('up');
+                    break;
+                case 'ArrowDown':
+                case 's':
+                case 'S':
+                    e.preventDefault();
+                    setDirection('down');
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    e.preventDefault();
+                    setDirection('left');
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    e.preventDefault();
+                    setDirection('right');
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    togglePause();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

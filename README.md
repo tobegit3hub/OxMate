@@ -6,19 +6,21 @@ OxMate is an intelligent GitHub automation framework that uses specialized AI ag
 
 ## Overview
 
-OxMate consists of three specialized agents working together to handle your GitHub workflow:
+OxMate consists of four specialized agents working together to handle your GitHub workflow:
 
 | Agent | Purpose | Location |
 |-------|---------|----------|
 | **PM Agent** | Analyzes GitHub issues, identifies patterns, and creates summary reports | `pm-agent/` |
 | **Dev Agent** | Implements issues end-to-end, from branch creation to pull request | `dev-agent/` |
 | **Test Agent** | Generates tests for pull requests and provides quality reports | `test-agent/` |
+| **OP Agent** | Generates daily operations reports with merged PRs and closed issues | `op-agent/` |
 
 ## Features
 
 - **Issue Analysis**: Automatically analyze open issues, categorize feedback, and identify common themes
 - **End-to-End Implementation**: Resolve issues with automated branch creation, coding, and PR creation
 - **Automated Testing**: Generate and run tests for pull requests with coverage reports
+- **Operations Reports**: Generate daily summaries of merged PRs and closed issues
 - **Multi-Language Support**: Works with Python, JavaScript/TypeScript, Go, Rust, Java, and more
 - **GitHub Integration**: Native MCP (Model Context Protocol) integration with GitHub
 
@@ -81,6 +83,21 @@ This will:
 4. Run tests and collect coverage metrics
 5. Post a detailed report as a PR comment
 
+### OP Agent - Generate Operations Report
+
+Generate a daily operations report with merged PRs and closed issues:
+
+```bash
+# Trigger the operations report skill
+claude /generate-op-report
+```
+
+This will:
+1. Fetch merged pull requests from today
+2. Fetch closed issues from today
+3. Generate a well-formatted markdown report
+4. Save the report to the current directory
+
 ## Project Structure
 
 ```
@@ -100,6 +117,10 @@ OxMate/
 │   │       ├── run_quality_checks.py
 │   │       └── generate_report.py
 │   └── game.js               # Example test file
+├── op-agent/
+│   └── .claude/skills/generate-op-report/
+│       ├── SKILL.md          # Operations report workflow
+│       └── evals/
 ├── LICENSE                   # Apache 2.0
 └── README.md
 ```

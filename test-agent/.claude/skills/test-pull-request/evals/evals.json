@@ -1,0 +1,23 @@
+{
+  "skill_name": "test-pull-request",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Test PR #42 in this repo - it adds a new authentication module",
+      "expected_output": "Skill fetches PR #42, analyzes changed files, generates tests for auth module, runs tests with coverage, runs quality checks, and posts a report as PR comment",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you generate tests for pull request #123? It's a Python project with pytest.",
+      "expected_output": "Skill detects Python/pytest, fetches PR #123, generates appropriate pytest tests, runs them with coverage, and posts results",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Review PR #7 for testing needs - it's a Node.js API change",
+      "expected_output": "Skill detects Node.js, analyzes API changes, generates Jest/Vitest tests, runs them, and posts coverage + quality report",
+      "files": []
+    }
+  ]
+}

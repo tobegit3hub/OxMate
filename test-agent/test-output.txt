@@ -1,0 +1,81 @@
+
+> snake-game@1.0.0 test
+> jest --coverage
+
+PASS ./game.test.js
+  Snake Game
+    Constants
+      ✓ should have correct game constants (7 ms)
+    Game Initialization
+      ✓ should initialize snake at center of grid (1 ms)
+      ✓ should initialize with correct default values (1 ms)
+      ✓ should spawn food on initialization (1 ms)
+      ✓ should load high score from localStorage (1 ms)
+    Snake Movement
+      ✓ should move snake right by default
+      ✓ should move snake up when direction is up (1 ms)
+      ✓ should move snake down when direction is down
+      ✓ should move snake left when direction is left
+      ✓ should update direction from nextDirection (1 ms)
+    Direction Control
+      ✓ setDirection should update nextDirection
+      ✓ setDirection should prevent reversing direction (1 ms)
+      ✓ setDirection should allow perpendicular turns
+      ✓ setDirection should not work when game is over
+    Collision Detection
+      ✓ should detect wall collision on left edge (1 ms)
+      ✓ should detect wall collision on right edge
+      ✓ should detect wall collision on top edge (1 ms)
+      ✓ should detect wall collision on bottom edge
+      ✓ should detect self collision (1 ms)
+    Food Mechanics
+      ✓ should increase score when eating food
+      ✓ should grow snake when eating food (1 ms)
+      ✓ should spawn new food after eating
+      ✓ should increase speed when eating food
+      ✓ should not decrease speed below MIN_SPEED (1 ms)
+      ✓ should update high score when current score exceeds it
+      ✓ should not update high score if current score is lower (1 ms)
+    isSnakeAt
+      ✓ should return true when snake is at position
+      ✓ should return false when snake is not at position (1 ms)
+    Food Spawning
+      ✓ should spawn food within grid bounds (6 ms)
+      ✓ should not spawn food on snake body (1 ms)
+    Game State Management
+      ✓ togglePause should toggle pause state (1 ms)
+      ✓ gameStep should not execute when paused
+      ✓ gameStep should not execute when game over
+      ✓ endGame should set game over state (1 ms)
+      ✓ restartGame should reset game state
+    Drawing
+      ✓ draw should call canvas methods (1 ms)
+      ✓ draw should clear canvas
+      ✓ draw should draw food (1 ms)
+      ✓ draw should draw snake with correct colors
+    Game Loop
+      ✓ startGameLoop should create interval (1 ms)
+      ✓ stopGameLoop should clear interval
+      ✓ game speed should increase after eating food
+    Edge Cases
+      ✓ should handle empty snake gracefully (1 ms)
+      ✓ should handle snake with single segment
+      ✓ should handle food at edge of grid (1 ms)
+      ✓ should handle food at TILE_COUNT - 1
+    DOM Integration
+      ✓ should update score in DOM when food is eaten
+      ✓ should show game over screen when game ends (1 ms)
+      ✓ should update final score in game over screen
+      ✓ should hide game over screen on restart
+
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------|---------|----------|---------|---------|-------------------
+All files |   94.68 |    81.63 |     100 |   93.78 |                   
+ game.js  |   94.68 |    81.63 |     100 |   93.78 | 65,241-251        
+----------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       50 passed, 50 total
+Snapshots:   0 total
+Time:        0.388 s, estimated 1 s
+Ran all test suites.

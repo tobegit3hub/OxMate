@@ -1,0 +1,77 @@
+{
+  "skill_name": "generate-op-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Generate a daily operations report for today's merged PRs and closed issues in this repository",
+      "expected_output": "A markdown file named ops-report-YYYY-MM-DD.md saved in the current directory, containing sections for merged PRs and closed issues from today with details like author, time, URL, and description",
+      "files": [],
+      "assertions": [
+        {
+          "name": "report_file_created",
+          "description": "A markdown report file was created in the current directory"
+        },
+        {
+          "name": "has_merged_prs_section",
+          "description": "The report contains a 'Merged Pull Requests' section"
+        },
+        {
+          "name": "has_closed_issues_section",
+          "description": "The report contains a 'Closed Issues' section"
+        },
+        {
+          "name": "has_summary_section",
+          "description": "The report contains a summary with counts"
+        },
+        {
+          "name": "uses_github_mcp",
+          "description": "The skill used GitHub MCP tools (search_pull_requests and search_issues)"
+        },
+        {
+          "name": "proper_filename_format",
+          "description": "The report filename follows ops-report-YYYY-MM-DD.md format"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Get me today's PR and issue activity report",
+      "expected_output": "A markdown report showing all merged pull requests and closed issues from today in the current git repository",
+      "files": [],
+      "assertions": [
+        {
+          "name": "report_file_created",
+          "description": "A markdown report file was created in the current directory"
+        },
+        {
+          "name": "includes_pr_details",
+          "description": "Merged PRs include title, author, merge time, and URL"
+        },
+        {
+          "name": "includes_issue_details",
+          "description": "Closed issues include title, author, close time, labels, and URL"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a daily standup report for the team showing what was accomplished today",
+      "expected_output": "A markdown report with merged PRs and closed issues formatted as a daily standup summary",
+      "files": [],
+      "assertions": [
+        {
+          "name": "report_file_created",
+          "description": "A markdown report file was created"
+        },
+        {
+          "name": "formatted_as_standup",
+          "description": "The report has a professional format suitable for sharing with a team"
+        },
+        {
+          "name": "has_activity_summary",
+          "description": "The report includes a summary section with total counts"
+        }
+      ]
+    }
+  ]
+}

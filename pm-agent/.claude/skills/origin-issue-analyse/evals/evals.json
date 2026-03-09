@@ -1,0 +1,30 @@
+{
+  "skill_name": "aiplatform-pm-analyse",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Analyze all open issues in https://github.com/tobegit3hub/OxMate/issues and create a detailed summary issue with the analysis",
+      "expected_output": "A new issue is created in the OxMate repository containing a comprehensive analysis of all open issues including category breakdown, priority distribution, key themes, stale issues, and recommendations",
+      "files": [],
+      "expectations": [
+        "Successfully lists all open issues from the repository",
+        "Analyzes issues by category (bugs, features, questions, documentation)",
+        "Identifies priority levels for issues",
+        "Creates a new issue with formatted analysis content",
+        "Includes key themes and patterns from the issues"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Do a product management analysis of open issues in tobegit3hub/OxMate and summarize findings in a new issue",
+      "expected_output": "A PM-style analysis issue is created with insights about the issue backlog, trends, and actionable recommendations",
+      "files": [],
+      "expectations": [
+        "Fetches open issues from the correct repository",
+        "Provides category breakdown with counts",
+        "Identifies stale issues (30+ days inactive)",
+        "Creates a well-structured analysis issue"
+      ]
+    }
+  ]
+}
